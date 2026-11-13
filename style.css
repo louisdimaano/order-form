@@ -7,6 +7,7 @@
     --accent: #2d5a3d;
     --danger: #b84040;
     --accent-light: #e8f0eb;
+    --warning: #9a6b00;
     color-scheme: light dark;
 }
 
@@ -166,5 +167,81 @@ button:hover {
         --accent: #4a8a60;
         --accent-light: #1a2e22;
         --danger: #e06060;
+        --warning: #9a6b00;
     }
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.color-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.color-chip {
+    height: 72px;
+    border-bottom: 1px solid var(--border);
+}
+
+.color-name {
+    font-weight: 600;
+    margin: 10px 12px 2px;
+}
+
+.color-details {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 12px;
+}
+
+.level {
+    display: inline-block;
+    margin: 8px 12px 12px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.level-plenty {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.level-limited {
+    background: color-mix(in srgb, var(--warning) 15%, transparent);
+    color: var(--warning);
+}
+
+.level-low {
+    background: color-mix(in srgb, var(--danger) 15%, transparent);
+    color: var(--danger);
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 8px 0 24px;
+}
+
+#updated {
+    margin-bottom: 8px;
+}
+
+.row+.field-note {
+    margin: -12px 0 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.field-note a {
+    color: var(--accent);
 }
