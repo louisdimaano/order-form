@@ -81,22 +81,24 @@ function showColors(colors) {
 
     const groups = {};
     for (const color of colors) {
-        if (!groups[color.material]) {
-            groups[color.material] = [];
+        const finish = color.finish || "Basic";
+        const group = finish === "Basic" ? color.material : `${color.material} · ${finish}`;
+        if (!groups[group]) {
+            groups[group] = [];
         }
-        groups[color.material].push(color);
+        groups[group].push(color);
     }
 
-    for (const material in groups) {
+    for (const group in groups) {
         const section = document.createElement("div");
         section.className = "card";
 
         const heading = document.createElement("h2");
-        heading.textContent = material;
+        heading.textContent = group;
 
         const grid = document.createElement("div");
         grid.className = "color-grid";
-        for (const color of groups[material]) {
+        for (const color of groups[group]) {
             grid.append(makeColorCard(color));
         }
 

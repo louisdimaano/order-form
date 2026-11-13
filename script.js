@@ -24,6 +24,7 @@ form.addEventListener("submit", function (event) {
     lines.push(`Quantity: ${data.quantity}`);
     lines.push(`Primary color: ${data.primaryColor}`);
     lines.push(`Material: ${materialSelect.selectedOptions[0].text}`);
+    lines.push(`Finish: ${data.finish}`);
 
     if (data.description) {
         lines.push(`Description: ${data.description}`);
