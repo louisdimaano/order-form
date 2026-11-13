@@ -1,43 +1,155 @@
 :root {
-    --bg: #f7f6f3;
+    --bg: #e9eee9;
     --surface: #ffffff;
-    --border: #dddbd6;
-    --text: #1c1b18;
-    --muted: #6b6860;
-    --accent: #2d5a3d;
+    --field: #f4f7f4;
+    --border: #d3dbd4;
+    --text: #1d2320;
+    --muted: #5f6b63;
+    --accent: #2d6a4f;
+    --accent-light: #dcebe2;
+    --awning: #2d6a4f;
+    --awning-light: #fbfaf5;
     --danger: #b84040;
-    --accent-light: #e8f0eb;
     --warning: #9a6b00;
+    --heading-font: "Bricolage Grotesque", system-ui, sans-serif;
     color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #171b19;
+        --surface: #202623;
+        --field: #1a1f1c;
+        --border: #313a35;
+        --text: #e6ebe7;
+        --muted: #93a098;
+        --accent: #5fae86;
+        --accent-light: #1f3328;
+        --awning: #2d6a4f;
+        --awning-light: #d9ddd6;
+        --danger: #e06060;
+        --warning: #e0b040;
+    }
 }
 
 body {
     font-family: system-ui, sans-serif;
+    line-height: 1.5;
     background: var(--bg);
     color: var(--text);
     margin: 0;
-    padding: 40px 16px;
+}
+
+/* The shop awning from the Dimporium logo */
+.awning {
+    position: relative;
+    height: 56px;
+    background: repeating-linear-gradient(90deg,
+            var(--awning) 0 40px,
+            var(--awning-light) 40px 80px);
+    transform-origin: top;
+    animation: unroll 0.7s ease-out;
+}
+
+.awning::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background:
+        radial-gradient(circle at 20px 0, var(--awning) 20px, transparent 21px) 0 0 / 80px 20px repeat-x,
+        radial-gradient(circle at 60px 0, var(--awning-light) 20px, transparent 21px) 0 0 / 80px 20px repeat-x;
+    filter: drop-shadow(0 3px 2px rgb(0 0 0 / 0.12));
+}
+
+@keyframes unroll {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .awning {
+        animation: none;
+    }
 }
 
 .container {
     max-width: 660px;
     margin: 0 auto;
+    padding: 48px 16px 40px;
+}
+
+header {
+    margin-bottom: 28px;
+}
+
+.brand-name {
+    font-family: var(--heading-font);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--accent);
+    margin: 0;
+}
+
+h1 {
+    font-family: var(--heading-font);
+    font-weight: 800;
+    font-size: clamp(36px, 9vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 4px 0 12px;
+}
+
+.subtitle {
+    font-size: 17px;
+    color: var(--muted);
+    margin: 0;
+    max-width: 34em;
 }
 
 .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 24px;
     margin-bottom: 16px;
 }
 
 .card h2 {
+    font-family: var(--heading-font);
+    font-weight: 700;
+    font-size: 22px;
     margin: 0 0 18px;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
+}
+
+.notice {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.notice h2 {
+    font-family: var(--heading-font);
+    font-size: 18px;
+    margin: 0 0 4px;
+}
+
+.notice p {
+    margin: 0;
+}
+
+form,
+#colorList {
+    margin-top: 28px;
 }
 
 .field {
@@ -46,7 +158,7 @@ body {
 
 label {
     display: block;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 6px;
 }
 
@@ -55,10 +167,11 @@ select,
 textarea {
     width: 100%;
     font: inherit;
-    padding: 9px 12px;
+    padding: 10px 12px;
     border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--bg);
+    border-radius: 8px;
+    background: var(--field);
+    color: var(--text);
     box-sizing: border-box;
 }
 
@@ -67,29 +180,45 @@ textarea {
     resize: vertical;
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
 
 button {
     width: 100%;
     background: var(--accent);
     color: #ffffff;
     border: none;
-    border-radius: 8px;
-    padding: 13px;
-    font: inherit;
-    font-weight: 600;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: var(--heading-font);
+    font-size: 18px;
+    font-weight: 700;
     cursor: pointer;
 }
 
-.notice {
-    background: var(--accent-light);
-    border: 1px solid var(--accent);
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 28px;
+button:hover {
+    opacity: 0.9;
 }
 
-.notice h2 {
-    margin-top: 0;
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.btn-secondary {
+    background: none;
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 12px;
 }
 
 .row {
@@ -114,63 +243,41 @@ button {
     margin: 6px 0 0;
 }
 
-.success pre {
-    text-align: left;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px;
-    font-size: 13px;
-    white-space: pre-wrap;
+.field-note a {
+    color: var(--accent);
+}
+
+.row+.field-note {
+    margin: -12px 0 20px;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .success {
     text-align: center;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 24px;
-    margin-bottom: 16px;
+    margin-top: 28px;
 }
 
 .success h2 {
+    font-family: var(--heading-font);
     margin-top: 0;
 }
 
-
-.btn-secondary {
-    background: none;
-    color: var(--text);
+.success pre {
+    text-align: left;
+    background: var(--field);
     border: 1px solid var(--border);
-    margin-top: 12px;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+    white-space: pre-wrap;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #161614;
-        --surface: #1f1f1c;
-        --border: #2e2e2a;
-        --text: #e8e6e0;
-        --muted: #8a8880;
-        --accent: #4a8a60;
-        --accent-light: #1a2e22;
-        --danger: #e06060;
-        --warning: #9a6b00;
-    }
-}
-
+/* Colors in stock page */
 .color-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -179,9 +286,9 @@ button:hover {
 
 .color-item {
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    background: var(--bg);
+    background: var(--field);
 }
 
 .color-chip {
@@ -224,24 +331,14 @@ button:hover {
     color: var(--danger);
 }
 
+#updated {
+    margin-bottom: 8px;
+}
+
 .back-link {
     display: block;
     text-align: center;
     color: var(--accent);
     font-weight: 600;
     margin: 8px 0 24px;
-}
-
-#updated {
-    margin-bottom: 8px;
-}
-
-.row+.field-note {
-    margin: -12px 0 20px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.field-note a {
-    color: var(--accent);
 }
