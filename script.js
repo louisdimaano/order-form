@@ -21,6 +21,10 @@ form.addEventListener("submit", function (event) {
 
     const lines = [];
 
+    lines.push(`Name: ${data.customerName}`);
+    if (data.contact) {
+        lines.push(`Contact: ${data.contact}`);
+    }
     lines.push(`Quantity: ${data.quantity}`);
     lines.push(`Primary color: ${data.primaryColor}`);
     lines.push(`Material: ${materialSelect.selectedOptions[0].text}`);
@@ -75,7 +79,7 @@ resetBtn.addEventListener("click", function () {
     form.reset();
     form.hidden = false;
     successScreen.hidden = true;
-    document.getElementById("modelLink").focus();
+    document.getElementById("customerName").focus();
 
 });
 
