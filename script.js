@@ -13,6 +13,23 @@ const placementInput = document.getElementById("Placement");
 const embossTextInput = document.getElementById("embossText");
 const hasDeadlineBox = document.getElementById("hasDeadline");
 const deadlineInput = document.getElementById("deadline");
+const sketchPreview = document.getElementById("sketchPreview");
+
+function updateSketchPreview() {
+    for (const img of sketchPreview.querySelectorAll("img")) {
+        URL.revokeObjectURL(img.src);
+    }
+    sketchPreview.replaceChildren();
+
+    for (const file of sketchInput.files) {
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.alt = file.name;
+        sketchPreview.append(img);
+    }
+}
+
+sketchInput.addEventListener("change", updateSketchPreview);
 
 function updateDeadline() {
     deadlineInput.closest(".field").hidden = !hasDeadlineBox.checked;
@@ -186,6 +203,11 @@ form.addEventListener("submit", function (event) {
     const summary = lines.join("\r\n");
 
     summaryText.textContent = summary;
+    document.getElementById("ticketDate").textContent = new Date().toLocaleDateString(undefined, {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    });
     form.hidden = true;
     successScreen.hidden = false;
 
@@ -206,6 +228,7 @@ resetBtn.addEventListener("click", function () {
     updateColorLists();
     updateTextFields();
     updateDeadline();
+    updateSketchPreview();
     form.hidden = false;
     successScreen.hidden = true;
     document.getElementById("customerName").focus();

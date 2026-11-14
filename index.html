@@ -84,6 +84,7 @@
                 <div class="field">
                     <label for="sketch">Sketch or photo (optional)</label>
                     <input type="file" id="sketch" name="sketch" accept="image/*" multiple>
+                    <div id="sketchPreview" class="thumbs"></div>
                     <p class="field-note">Have a drawing or picture of what you want? Take a photo or pick one from your
                         gallery.</p>
                     <p class="field-note">Your answers are saved on this device only, so you can come back and finish
@@ -170,7 +171,13 @@
             <h2>Your order summary is ready</h2>
             <p>Tap <strong>Send Order</strong>, choose your email app, and send it to <strong>
                     dimporium3d@gmail.com</strong></p>
-            <pre id="summaryText"></pre>
+            <div class="ticket-wrap">
+                <div class="ticket">
+                    <p class="ticket-brand">Dimporium</p>
+                    <p class="ticket-date" id="ticketDate"></p>
+                    <pre id="summaryText"></pre>
+                </div>
+            </div>
             <button type="button" id="sendBtn">Send Order</button>
             <button type="button" id="copyBtn" class="btn-secondary">Copy Summary</button>
             <button type="button" id="resetBtn" class="btn-secondary">Start a new order</button>

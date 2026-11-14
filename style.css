@@ -361,3 +361,84 @@ a:focus-visible {
 .checkbox+.field {
     margin: 16px 0 0;
 }
+
+.thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.thumbs:empty {
+    display: none;
+}
+
+.thumbs img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.ticket-wrap {
+    max-width: 360px;
+    margin: 20px auto;
+    filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.18));
+}
+
+.ticket {
+    padding: 22px 22px 30px;
+    background: #fffdf7;
+    color: #1d2320;
+    text-align: left;
+    mask:
+        radial-gradient(circle at 50% 100%, transparent 6px, #000 6.5px) bottom / 16px 8px repeat-x,
+        linear-gradient(#000 0 0) top / 100% calc(100% - 7px) no-repeat;
+    animation: print-out 0.6s ease-out;
+}
+
+@keyframes print-out {
+    from {
+        clip-path: inset(0 0 100% 0);
+        transform: translateY(-16px);
+    }
+
+    to {
+        clip-path: inset(0 0 0 0);
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ticket {
+        animation: none;
+    }
+}
+
+.ticket-brand {
+    font-family: var(--heading-font);
+    font-weight: 800;
+    font-size: 26px;
+    text-align: center;
+    color: #2d6a4f;
+    margin: 0;
+}
+
+.ticket-date {
+    text-align: center;
+    font-size: 13px;
+    color: #5f6b63;
+    margin: 2px 0 14px;
+    padding-bottom: 14px;
+    border-bottom: 2px dashed #c9d1ca;
+}
+
+.success .ticket pre {
+    background: #fffdf7;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+}
