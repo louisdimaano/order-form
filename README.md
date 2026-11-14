@@ -6,18 +6,23 @@ An order form for Dimporium, my small 3D printing side project. Customers fill o
 
 ## Features
 
-- Order details, color and material choices, custom text, and an optional deadline
-- Required fields are checked before the form can be submitted
-- Customers can attach sketches or photos from their camera or gallery
-- Builds an order summary that skips any questions left blank and trims extra spaces
+- Name and contact fields, so every order says who it's from
+- Pick a material first, then choose from the colors I have in stock in that material, grouped by finish (Basic, Matte, Silk, and more)
+- A colors in stock page that shows each filament color and how much I have
+- Custom text fields that only appear when emboss or deboss is picked
+- Quantity takes whole numbers only, and the deadline date only appears when "I need it by a certain date" is checked (past dates are blocked)
+- Answers are saved as a draft on the customer's device, so they can leave and finish later
+- Customers can attach sketches or photos from their camera or gallery, with thumbnails to check they picked the right ones
+- Builds an order summary that skips any questions left blank and trims extra spaces, shown as a printed order ticket
 - Send button opens the phone's share menu with the summary and photos already attached
 - Copy button as a backup for devices that can't share
+- Link preview card, tab icon, and home screen icon, so the link looks like Dimporium when it's texted or shared
 - Works on phones (fields stack on small screens)
 - Light and dark mode based on the device's settings
 
 ## Privacy
 
-Nothing a customer enters is saved or uploaded by the page. Everything runs in the browser on their device, and their order and photos only leave their phone when they tap Send and choose how to send it.
+Nothing a customer enters is uploaded by the page. Their answers (not photos) are saved as a draft in their own browser on their own device, and the draft is cleared once they send the order or start a new one. Their order and photos only leave their phone when they tap Send and choose how to send it.
 
 ## Colors in Stock Page
 
@@ -56,6 +61,12 @@ This was my first project built with HTML, CSS, and JavaScript from scratch. Som
 - Putting data on the page with textContent instead of innerHTML, so text from a file can never run as code
 - Using the CSS + selector to style one element based on what comes right before it
 - Tracking down a 404 error caused by a file named color.js instead of colors.js
+- Building dropdown options with JavaScript, and why values have to match exactly (petg is not PETG)
+- Showing and hiding fields based on other answers, and only making a field required while it's visible
+- Saving a draft with localStorage, and restoring it in the right order (material before color, and only after the color list loads)
+- Why the obvious way to get today's date can be off by a day (UTC vs local time)
+- Showing photo previews with URL.createObjectURL without uploading anything
+- Adding Open Graph tags so the link shows a preview card, and why messaging apps can keep showing an old preview
 
 ## Running It Locally
 
@@ -68,5 +79,5 @@ No installs or build steps needed. The color page needs a local server because b
 ## Future Improvements
 
 - Send orders straight to my email when the customer taps Submit, without them having to pick an app or type my address
-- Turn the color field into a dropdown of filament colors I have in stock
 - Keep the summary easy to read in email apps that remove line breaks
+- A painted finish option (sanded, primed, and hand painted) with starting prices by size
