@@ -74,58 +74,39 @@
                     <input type="file" id="sketch" name="sketch" accept="image/*" multiple>
                     <p class="field-note">Have a drawing or picture of what you want? Take a photo or pick one from your
                         gallery.</p>
-                    <p class="field-note">Nothing you enter is saved or uploaded by this page. Your order and photos
-                        only
-                        leave your phone when you tap Send and choose how to send them to me.</p>
+                    <p class="field-note">Your answers are saved on this device only, so you can come back and finish
+                        later. Photos aren't saved. Nothing is uploaded: your order and photos only leave your phone
+                        when you tap Send and choose how to send them to me.</p>
                 </div>
 
                 <div class="field">
                     <label for="quantity">Quantity <span class="req">*</span></label>
-                    <input type="text" id="quantity" name="quantity" placeholder="e.g. 1, 2, 3..." required>
+                    <input type="number" id="quantity" name="quantity" min="1" step="1" value="1" required>
 
                 </div>
             </div>
             <div class="card">
                 <h2>Color &amp; Material</h2>
+                <div class="field">
+                    <label for="material">Material</label>
+                    <select id="material" name="material">
+                        <option value="PETG">PETG (Standard)</option>
+                        <option value="PLA">PLA (Display Pieces)</option>
+                        <option value="Other">Other (Specify in Description)</option>
+                    </select>
+                </div>
+
                 <div class="row">
                     <div class="field">
                         <label for="primaryColor">Primary Color <span class="req">*</span></label>
-                        <input type="text" id="primaryColor" name="primaryColor" placeholder="e.g. Black, Army Green..."
-                            required>
+                        <select id="primaryColor" name="primaryColor" required></select>
                     </div>
-
                     <div class="field">
-                        <label for="secondaryColor">Secondary Color (if any)</label>
-                        <input type="text" id="secondaryColor" name="secondaryColor" placeholder="e.g. White, None...">
+                        <label for="secondaryColor">Secondary Color</label>
+                        <select id="secondaryColor" name="secondaryColor"></select>
                     </div>
                 </div>
-
                 <p class="field-note"><a href="colors.html" target="_blank">See which colors I have in stock</a></p>
-
-                <div class="row">
-                    <div class="field">
-                        <label for="material">Material</label>
-                        <select id="material" name="material">
-                            <option value="petg">PETG (Standard)</option>
-                            <option value="pla">PLA (Display Pieces)</option>
-                            <option value="other">Other (Specify in Description)</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="finish">Finish</label>
-                        <select id="finish" name="finish">
-                            <option>Basic</option>
-                            <option>Matte</option>
-                            <option>Silk</option>
-                            <option>Glow</option>
-                            <option>Sparkle</option>
-                            <option>Marble</option>
-                            <option>Wood</option>
-                        </select>
-                        <p class="field-note">Specialty finishes may add to the cost.</p>
-                    </div>
-                </div>
-
             </div>
             <div class="card">
                 <h2>Customize Text</h2>
@@ -154,9 +135,9 @@
 
             <div class="card">
                 <h2>Deadline</h2>
-
-                <div class="field">
-                    <label for="deadline">Needed by (Optional)</label>
+                <label class="checkbox"><input type="checkbox" id="hasDeadline"> I need it by a certain date</label>
+                <div class="field" hidden>
+                    <label for="deadline">Needed by</label>
                     <input type="date" id="deadline" name="deadline">
                 </div>
             </div>

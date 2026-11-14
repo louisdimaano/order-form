@@ -7,6 +7,132 @@ const materialSelect = document.getElementById("material");
 const textStyleSelect = document.getElementById("textStyle");
 const sketchInput = document.getElementById("sketch");
 const sendBtn = document.getElementById("sendBtn");
+const primaryColorSelect = document.getElementById("primaryColor");
+const secondaryColorSelect = document.getElementById("secondaryColor");
+const placementInput = document.getElementById("Placement");
+const embossTextInput = document.getElementById("embossText");
+const hasDeadlineBox = document.getElementById("hasDeadline");
+const deadlineInput = document.getElementById("deadline");
+
+function updateDeadline() {
+    deadlineInput.closest(".field").hidden = !hasDeadlineBox.checked;
+    deadlineInput.required = hasDeadlineBox.checked;
+    deadlineInput.min = new Date().toLocaleDateString("en-CA");
+}
+
+hasDeadlineBox.addEventListener("change", updateDeadline);
+updateDeadline();
+
+const DRAFT_KEY = "dimporiumOrderDraft";
+
+function saveDraft() {
+    const draft = Object.fromEntries(new FormData(form));
+    delete draft.sketch;
+    try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    } catch {
+        // Some private browsing modes block storage. The form still works.
+    }
+}
+
+function clearDraft() {
+    try {
+        localStorage.removeItem(DRAFT_KEY);
+    } catch {
+        // Nothing saved, nothing to clear.
+    }
+}
+
+function restoreDraft() {
+    let draft = null;
+    try {
+        draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+    } catch {
+        return;
+    }
+    if (!draft) {
+        return;
+    }
+
+    if (draft.material) {
+        materialSelect.value = draft.material;
+        updateColorLists();
+    }
+
+    for (const name in draft) {
+        const field = form.elements[name];
+        if (!field) {
+            continue;
+        }
+        field.value = draft[name];
+        if (field.tagName === "SELECT" && field.selectedIndex === -1) {
+            field.selectedIndex = 0;
+        }
+    }
+
+    hasDeadlineBox.checked = Boolean(draft.deadline);
+    updateTextFields();
+    updateDeadline();
+}
+
+form.addEventListener("input", saveDraft);
+
+function updateTextFields() {
+    const hasText = textStyleSelect.value !== "none";
+    placementInput.closest(".field").hidden = !hasText;
+    embossTextInput.closest(".field").hidden = !hasText;
+    embossTextInput.required = hasText;
+}
+
+textStyleSelect.addEventListener("change", updateTextFields);
+updateTextFields();
+
+let stockColors = [];
+
+function fillColorSelect(select, firstText) {
+    select.replaceChildren(new Option(firstText, ""));
+
+    const groups = {};
+    for (const color of stockColors) {
+        if (color.material !== materialSelect.value) {
+            continue;
+        }
+        const finish = color.finish || "Basic";
+        if (!groups[finish]) {
+            groups[finish] = document.createElement("optgroup");
+            groups[finish].label = finish;
+            select.append(groups[finish]);
+        }
+        const value = finish === "Basic" ? color.color : `${color.color} (${finish})`;
+        groups[finish].append(new Option(color.color, value));
+    }
+
+    select.append(new Option("A color not listed (describe below)", "Not listed, see description"));
+}
+
+function updateColorLists() {
+    fillColorSelect(primaryColorSelect, "Pick a color");
+    fillColorSelect(secondaryColorSelect, "None");
+}
+
+materialSelect.addEventListener("change", updateColorLists);
+updateColorLists();
+
+fetch("colors.json")
+    .then(function (response) {
+        if (!response.ok) {
+            throw new Error("colors.json not found");
+        }
+        return response.json();
+    })
+    .then(function (data) {
+        stockColors = data.colors;
+        updateColorLists();
+    })
+    .catch(function () {
+        // Lists keep only "A color not listed", so the form still works.
+    })
+    .finally(restoreDraft);
 
 form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -26,9 +152,8 @@ form.addEventListener("submit", function (event) {
         lines.push(`Contact: ${data.contact}`);
     }
     lines.push(`Quantity: ${data.quantity}`);
-    lines.push(`Primary color: ${data.primaryColor}`);
     lines.push(`Material: ${materialSelect.selectedOptions[0].text}`);
-    lines.push(`Finish: ${data.finish}`);
+    lines.push(`Primary color: ${data.primaryColor}`);
 
     if (data.description) {
         lines.push(`Description: ${data.description}`);
@@ -42,16 +167,16 @@ form.addEventListener("submit", function (event) {
     if (data.secondaryColor) {
         lines.push(`Secondary color: ${data.secondaryColor}`);
     }
-    if (data.Placement) {
-        lines.push(`Placement: ${data.Placement}`);
-    }
     if (data.textStyle !== "none") {
         lines.push(`Style: ${textStyleSelect.selectedOptions[0].text}`);
+        if (data.Placement) {
+            lines.push(`Placement: ${data.Placement}`);
+        }
+        if (data.embossText) {
+            lines.push(`Emboss/Deboss: ${data.embossText}`);
+        }
     }
-    if (data.embossText) {
-        lines.push(`Emboss/Deboss: ${data.embossText}`);
-    }
-    if (data.deadline) {
+    if (hasDeadlineBox.checked && data.deadline) {
         lines.push(`Deadline: ${data.deadline}`);
     }
     if (data.otherNotes) {
@@ -77,6 +202,10 @@ copyBtn.addEventListener("click", function () {
 
 resetBtn.addEventListener("click", function () {
     form.reset();
+    clearDraft();
+    updateColorLists();
+    updateTextFields();
+    updateDeadline();
     form.hidden = false;
     successScreen.hidden = true;
     document.getElementById("customerName").focus();
@@ -95,7 +224,7 @@ sendBtn.addEventListener("click", function () {
     }
 
     if (navigator.canShare && navigator.canShare(shareData)) {
-        navigator.share(shareData).catch(function () { });
+        navigator.share(shareData).then(clearDraft).catch(function () { });
     } else {
         sendBtn.textContent = "Sharing isn't supported here. Use Copy Summary instead.";
     }
